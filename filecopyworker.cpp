@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 #include <QFile>
 #include <QDir>
 #include <QString>
@@ -58,6 +59,10 @@ void FileCopyWorker::doWork(const QList<FileCopyInfo> files) {
     QString fullDestination;
     int count = 0;
     for (auto param : files) {
+        if (m_abort) {
+            m_abort = false;
+            break;
+        }
         if (param.ext == "jpg") {
             fullDestination = addUniqueSuffix(
                         m_photoPath.absoluteFilePath(param.name));
@@ -69,8 +74,14 @@ void FileCopyWorker::doWork(const QList<FileCopyInfo> files) {
             ++count;
             emit fileDone(param.index, count);
         }
+        QCoreApplication::processEvents();
     }
     emit workDone(count);
+}
+
+void FileCopyWorker::abort()
+{
+    m_abort = true;
 }
 
 

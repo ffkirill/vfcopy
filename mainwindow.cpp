@@ -217,6 +217,8 @@ void MainWindow::on_copyFilesButton_clicked()
                                                                files.count(),
                                                                this);
         dialog->show();
+        connect(dialog, &QProgressDialog::canceled,
+                worker, &FileCopyWorker::abort);
         connect(worker, &FileCopyWorker::fileDone,
                 this, &MainWindow::onFileCopyDone);
         connect(worker, &FileCopyWorker::fileDone,

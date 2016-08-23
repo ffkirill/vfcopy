@@ -37,6 +37,7 @@ private:
     QString addUniqueSuffix(const QString &fileName);
     QDir m_photoPath;
     QDir m_videoPath;
+    bool m_abort = false;
 
 public:
     explicit FileCopyWorker(QObject *parent = 0);
@@ -49,6 +50,7 @@ signals:
 
 public slots:
     void doWork(const QList<FileCopyInfo> files);
+    void abort();
 };
 
 #endif // FILECOPYWORKER_H
